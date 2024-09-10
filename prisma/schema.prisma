@@ -1,0 +1,23 @@
+// schema.prisma
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model ticket{
+  id Int @unique @default(autoincrement())
+  contato_passivo Boolean
+  tipo_contato String
+  tipo_ticket String
+  veiculo String
+  motivo String
+  detalhe String
+}
+
+// criar model de usuario
+// criar um model para veiculo ?
