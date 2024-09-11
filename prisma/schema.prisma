@@ -9,15 +9,61 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model ticket{
+
+model Collaborator{
   id Int @unique @default(autoincrement())
-  contato_passivo Boolean
-  tipo_contato String
-  tipo_ticket String
-  veiculo String
-  motivo String
-  detalhe String
+  name String
+  email String
+  password String 
+  role String 
+  createdAt  DateTime @default(now()) 
+  updatedAt  DateTime @updatedAt  
+
+  tickets Ticket[]
+  vehicles Vehicle[]
+}
+model Ticket{
+  id Int @unique @default(autoincrement())
+  passive_contact Boolean
+  contact_type String
+  type String
+  reason String
+  detail String
+  createdAt  DateTime @default(now()) 
+  updatedAt  DateTime @updatedAt 
+  
+  collaborator Collaborator @relation(fields: [collaborator_id],references: [id])
+  collaborator_id Int
+
+  tickets_vehicles Ticket_vehicle[]
 }
 
-// criar model de usuario
-// criar um model para veiculo ?
+model Vehicle{
+  id Int @unique @default(autoincrement())
+  model String
+  year Int
+  type String
+  plate String
+  createdAt  DateTime @default(now()) 
+  updatedAt  DateTime @updatedAt 
+
+  collaborator Collaborator @relation(fields: [collaborato_id], references: [id])
+  collaborato_id Int
+
+  tickets_vehicles Ticket_vehicle[]
+
+}
+
+model Ticket_vehicle{
+  id Int @unique @default(autoincrement())
+  createdAt  DateTime @default(now()) 
+  updatedAt  DateTime @updatedAt 
+
+  tickets Ticket @relation(fields: [ticket_id], references: [id])
+  ticket_id Int
+
+  vehicles Vehicle @relation(fields: [vehicle_id], references: [id])
+  vehicle_id Int
+
+}
+
