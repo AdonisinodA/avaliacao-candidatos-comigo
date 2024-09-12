@@ -20,10 +20,10 @@ export default class User{
     }
 
     async getUser({email,password}:IGetUser){
-        if(!email){
+        if(!email.trim()){
             AppError('É preciso enviar o email.')
         }
-        if(!password){
+        if(!password.trim()){
             AppError('É preciso enviar a senha.')
         }
         const user = await this.isValidUser({email,password})

@@ -23,7 +23,9 @@ app.use(errorHandler)
 app.listen(port, async() => {
   try{
    await new CreateUsersScript().execute()
+   console.info('Usuários criados com sucesso!')
   }catch(error){
+    console.log("🚀 ~ app.listen ~ error:", error)
     console.error('Erro ao criar usuários.')
   }
   console.log(`Serviço em execução: http://localhost:${port}`)

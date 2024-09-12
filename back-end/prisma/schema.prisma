@@ -20,7 +20,6 @@ model Collaborator{
   updatedAt  DateTime @updatedAt  
 
   tickets Ticket[]
-  vehicles Vehicle[]
 }
 model Ticket{
   id Int @unique @default(autoincrement())
@@ -47,11 +46,7 @@ model Vehicle{
   createdAt  DateTime @default(now()) 
   updatedAt  DateTime @updatedAt 
 
-  client Collaborator @relation(fields: [collaborator_id], references: [id])
-  collaborator_id Int
-
   tickets_vehicles Ticket_vehicle[]
-
 }
 
 model Ticket_vehicle{

@@ -1,19 +1,5 @@
 {
-  "name": "avaliacao-candidatos-comigo-back-end",
-  "version": "1.0.0",
-  "description": "Avaliação de candidatos comigo back-end",
-  "type": "commonjs",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "database:up": "docker compose up -d",
-    "database:down": "docker compose down",
-    "dev": "tsx watch ./src/index.ts",
-    "build": "tsc",
-    "start": "node dist/index.js"
-  },
   "author": "adonisinoda",
-  "license": "ISC",
   "dependencies": {
     "@prisma/adapter-pg": "^5.19.1",
     "@prisma/client": "^5.19.1",
@@ -21,18 +7,36 @@
     "@types/express": "^4.17.21",
     "@types/jsonwebtoken": "^9.0.6",
     "@types/pg": "^8.11.8",
-    "bcrypt": "^5.1.1",
     "body-parser": "^1.20.3",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
-    "jsonwebtoken": "^9.0.2",
     "pg": "^8.12.0",
     "tsx": "^4.19.0"
   },
+  "description": "Avaliação de candidatos comigo back-end",
   "devDependencies": {
+    "@types/jest": "^29.5.12",
     "@types/node": "^22.5.4",
+    "bcrypt": "^5.1.1",
+    "jest": "^29.7.0",
+    "jest-mock": "^29.7.0",
+    "jsonwebtoken": "^9.0.2",
     "prisma": "^5.19.1",
+    "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.2"
-  }
+  },
+  "license": "ISC",
+  "main": "index.js",
+  "name": "avaliacao-candidatos-comigo-back-end",
+  "scripts": {
+    "build": "tsc",
+    "database:down": "docker compose down",
+    "database:up": "docker compose up -d",
+    "dev": "tsx watch ./src/index.ts",
+    "start": "node dist/index.js",
+    "test": "npx jest"
+  },
+  "type": "commonjs",
+  "version": "1.0.0"
 }

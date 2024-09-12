@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client"
 import { UserRepositorie } from "../repositories/user-repositorie"
 import bcrypt from "bcrypt";
 
+// script para gerar usuarios e veiculos
 export default class CreateUsersScript{
    
     async execute(){
@@ -20,15 +21,41 @@ export default class CreateUsersScript{
         ]
 
         const prisma = new PrismaClient()
-        await Promise.all(users.filter(async (user)=>{
+
+        const result = await Promise.all(users.map(async (user)=>{
             const result = await new UserRepositorie(prisma).get(user.email)
                 if(result){
-                    return 
+                    return false
                 }
                 await new UserRepositorie(prisma).create(user)
-
+                return true
         }))
 
-     
+        if(result.includes(false)){
+            const vehicleTypes = [
+                'Sedan', 
+                'SUV', 
+                'Hatchback', 
+                'Coupe', 
+                'Convertible', 
+                'Pickup', 
+                'Van', 
+                'Minivan', 
+                'Wagon', 
+                'Crossover'
+              ];
+            
+              const vehicles = vehicleTypes.map((type, index) => ({
+                model: `Model-${index + 1}`,
+                year: 2020 + index, 
+                type,
+                plate: `ABC-${Math.floor(Math.random() * 1000)}`, 
+              }));
+            
+              await prisma.vehicle.createMany({
+                data: vehicles,
+              });
+        }
+        
+        }
     }
-}
