@@ -28,6 +28,8 @@ class TicketRepository {
           reason: ticketData.reason,
           detail: ticketData.detail,
           collaborator_id: ticketData.collaborator_id,
+          status:'Aguardando',
+          term: new Date(new Date().setDate(new Date().getDate() + 7))
         },
       });
 
@@ -43,8 +45,18 @@ class TicketRepository {
     });
   }
   // Listar todos os Tickets
-  async findAll(): Promise<Ticket[]> {
-    return this.prisma.ticket.findMany();
+  async findAll() {
+    console.log('entrou em find all')
+    const tickets = await this.prisma.ticket.findMany({
+      include: {
+        tickets_vehicles: {
+          include: {
+            vehicles: true,
+          },
+        },
+      },
+    });
+    return tickets
   }
 
   // Encontrar um Ticket por ID

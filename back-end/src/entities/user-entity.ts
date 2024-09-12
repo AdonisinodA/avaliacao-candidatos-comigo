@@ -3,6 +3,7 @@ import AppError from "../error/app-error"
 import enviroment from "../config/enviroment"
 import { sign } from "jsonwebtoken"
 import bcrypt from "bcrypt";
+import { IUserAuthenticated } from "../types/interface";
 
 
 interface IGetUser{
@@ -10,7 +11,15 @@ interface IGetUser{
     password:string
 }
 
-
+interface  user{
+    id: number;
+    name: string;
+    email: string;
+    password: string;
+    role: string;
+    createdAt: Date;
+    updatedAt: Date;
+} 
 export default class User{
     constructor(private readonly prismaClient: PrismaClient){}
 
@@ -41,15 +50,15 @@ export default class User{
         if(!user){
             AppError('Usuário não encontrado', 404)
         }
-        if(bcrypt.compareSync(password, user!.password)){
+        if(bcrypt.compareSync(user!.password, password)){
            AppError('Senha incorreta.')
         }
         return user
     }
 
     // gerar token de autenticação do usuário.
-    generateTokenJwt(email:string, password:string){
-        const token = sign({ id: email, username: password }, enviroment.SECRET_KEY_JWT!, {
+    generateTokenJwt({email,name,role}:IUserAuthenticated){
+        const token = sign({ email,name,role }, enviroment.SECRET_KEY_JWT!, {
             expiresIn: '10h', 
           });
          return `Bearer ${token}`

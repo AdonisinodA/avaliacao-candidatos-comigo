@@ -10,7 +10,7 @@ export class EnsureAuthenticated{
     const token = req.headers['authorization']?.split(' ')[1]
 
     if (!token) {
-      return res.status(403).json({ message: 'Token não fornecido' });
+      return res.status(401).json({ message: 'Token não fornecido' });
     }
   
     verify(token, enviroment.SECRET_KEY_JWT, (err, decoded:any) => {

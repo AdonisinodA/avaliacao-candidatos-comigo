@@ -32,9 +32,10 @@ const users = [
     role: 'adm'
   }
 ];
-
+```
  
- ### Modelo entidade relacionamento
+### Modelo entidade relacionamento
+
  ![ER](./diagram.png "Logotipo do Projeto")
 
 ### TODO

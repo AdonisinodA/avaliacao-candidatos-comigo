@@ -18,16 +18,16 @@ export default class TicketController{
         try{
         const body = req.body
         const ticket = new TicketUseCase().createTicket(body)
-        return ticket
+        res.status(201).json(ticket)
         }catch(error){
             next(error)
         }
     }
     static async list(req:Request, res:Response, next: NextFunction){
         try{
-            const body = req.body
             const ticket = new TicketUseCase().listAllTickets()
-            return ticket
+            res.status(200).json(ticket)
+
             }catch(error){
                 next(error)
             }
@@ -41,7 +41,8 @@ export default class TicketController{
                 AppError('Id do ticket não informado',400)
             }
             const ticket = new TicketUseCase().updateTicket(ticket_id!,body)
-            return ticket
+            res.status(200).json(ticket)
+
             }catch(error){
                 next(error)
             }
@@ -51,7 +52,8 @@ export default class TicketController{
         try{
             const body = req.body
             const ticket = new TicketUseCase().createTicket(body)
-            return ticket
+            res.status(200).json(ticket)
+
             }catch(error){
                 next(error)
             }

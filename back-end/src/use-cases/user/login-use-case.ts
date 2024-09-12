@@ -1,5 +1,7 @@
 import { PrismaClient } from "@prisma/client/"
 import User from "../../entities/user-entity"
+import AppError from "../../error/app-error"
+import { permissions } from "../../enums/permissions"
 
 interface ILogin{
     email:string
@@ -17,7 +19,10 @@ export default class login{
         const prisma = new PrismaClient()
         const userPrisma = new User(prisma)
         const user = await userPrisma.getUser({email,password})
-        const token = userPrisma.generateTokenJwt(email,password)
+        if(!user){
+            AppError('Usuário não encontrado',404)
+        }
+        const token = userPrisma.generateTokenJwt({email:user!.email,name:user!.name,role:user!.role as permissions})
         return {
             name:user?.name,
             email:user?.email,

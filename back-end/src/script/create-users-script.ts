@@ -31,7 +31,7 @@ export default class CreateUsersScript{
                 return true
         }))
 
-        if(result.includes(false)){
+        if(result.includes(true)){
             const vehicleTypes = [
                 'Sedan', 
                 'SUV', 

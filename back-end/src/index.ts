@@ -4,13 +4,14 @@ import errorHandler from './middlewares/error-middleware'
 import enviroment from './config/enviroment'
 import routes from './routes'
 import CreateUsersScript from './script/create-users-script'
-import { EnsureAuthenticated } from './middlewares/ensure-authenticated-middleware'
+import cors from 'cors'
 
 const port = enviroment.PORT || 3001
-
-
 const app = express()
 
+app.use(cors({
+  origin: '*'
+}))
 app.use(bodyParser.urlencoded({
   extended: true
 }))
