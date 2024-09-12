@@ -15,7 +15,7 @@ app.use(bodyParser.urlencoded({
   extended: true
 }))
 app.use(bodyParser.json())
-app.use(EnsureAuthenticated.execute)
+
 app.use(routes)
 
 app.use(errorHandler)

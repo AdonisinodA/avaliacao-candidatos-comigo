@@ -1,5 +1,7 @@
+import { permissions } from "../enums/permissions"
+
 export interface IUserAuthenticated{
     email:string
-    role:string
+    role:permissions
     name:string
 }
