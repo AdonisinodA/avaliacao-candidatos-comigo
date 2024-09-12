@@ -8,6 +8,7 @@
 
 ### Como executar o projeto
 
+- Entre na pasta `back-end`
 - Crie um arquivo ``.env`` na raiz do projeto, terá um exemplar chamado ``.env.example``com todas as variáveis necessárias para executar o projeto.
 - Use o comando ``npm run database:up`` para subir o banco de dados postgres
 - Para executar o projeto é necessário o comando `npm i` para instalar as dependências.
@@ -17,12 +18,12 @@
  ![ER](./diagram.png "Logotipo do Projeto")
 
 ### TODO
-- [ ] 1. Nível 1 - Validação
-- [ ] 2. Nível 2 - Persistência
-- [ ] 3. Nível 3 - Autenticação
-- [ ] 4. Nível 4 - Gerenciamento de permissões
-- [ ] 5. Nível 5 - Testes
-- [ ] 6. Nível 6 - Infra
+- [x] 1. Nível 1 - Validação
+- [x] 2. Nível 2 - Persistência
+- [x] 3. Nível 3 - Autenticação
+- [x] 4. Nível 4 - Gerenciamento de permissões
+- [x] 5. Nível 5 - Testes
+- [x] 6. Nível 6 - Infra
 - [ ] 7. Nível 7 - Cloud
 - [ ] 8. Nível 8 - Monitoramento e Observabilidade
 
