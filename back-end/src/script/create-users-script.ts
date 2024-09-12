@@ -55,6 +55,8 @@ export default class CreateUsersScript{
               await prisma.vehicle.createMany({
                 data: vehicles,
               });
+              
+             console.info('Usuários criados com sucesso!')
         }
         
         }

@@ -14,6 +14,25 @@
 - O comando ``npm run database:up`` utiliza `docker compose`, caso utilize o `docker-compose` use o comando `docker-compose up --build`
 - Para executar o projeto é necessário o comando `npm i` para instalar as dependências.
 - Após instalar as dependências, execute o projeto com `npm run dev`, aparecerá um log localhost com a porta que foi definida na variável `PORT` no .env ou na porta 3001 como padrão.
+
+### logins
+- Quando inicializar o projeto, será executado um script juntamente com servidor para criar dois usuários, são eles:   
+```typescript
+const users = [
+  {
+    name: 'Colaborador',
+    email: 'colaborador@email.com',
+    password: 'comigo123',
+    role: 'colaborador'
+  },
+  {
+    name: 'Administrador',
+    email: 'adm@email.com',
+    password: 'comigo123',
+    role: 'adm'
+  }
+];
+
  
  ### Modelo entidade relacionamento
  ![ER](./diagram.png "Logotipo do Projeto")
