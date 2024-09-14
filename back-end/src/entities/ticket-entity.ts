@@ -1,7 +1,8 @@
 import { ticketTypes } from "../enums/ticket";
 import AppError from "../error/app-error";
+import { CollaboratorRepositorie } from "../repositories/collaborator-repositorie";
 
-type ticketType = 'Operacional' | 'Suporte' | 'Relacionamento' | 'Vendas';
+export type ticketType = 'Operacional' | 'Suporte' | 'Relacionamento' | 'Vendas';
 
 export interface ITicket {
   passiveContact: boolean;
@@ -9,9 +10,11 @@ export interface ITicket {
   type: string;
   reason: string;
   detail: string;
+  collaborator_id:number
+  vehicle_id:number
 }
 
-class Ticket {
+class TicketEntity {
   constructor(private ticket: ITicket) {
     this.ticket = ticket;
     this.validate();
@@ -31,6 +34,12 @@ class Ticket {
 
   public get reason(): string {
     return this.ticket.reason;
+  }
+  public get vehicleId(): number {
+    return this.ticket.vehicle_id;
+  }
+  public get collaboratorId(): number {
+    return this.ticket.collaborator_id;
   }
 
   public get detail(): string {
@@ -74,14 +83,24 @@ class Ticket {
     }
   }
 
+  //Função pra verificar se o colaborador existe
+  private async validateCollaboratorId(){
+    const collaboratorRepo = new CollaboratorRepositorie()
+    const collaborator = await collaboratorRepo.findById(this.collaboratorId)
+    if(!collaborator){
+      AppError('Colaborador não encontrado.',404)
+    }
+  }
+
   // Função geral para validar os dados
-  private validate() {
+  private async validate() {
     this.validatePassiveContact();
     this.validateContactType();
     this.validateType();
     this.validateReason();
     this.validateDetail();
+    await this.validateCollaboratorId()
   }
 }
 
-export default Ticket;
+export default TicketEntity;

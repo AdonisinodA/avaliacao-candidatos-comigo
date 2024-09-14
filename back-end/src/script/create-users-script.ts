@@ -1,33 +1,33 @@
 import { PrismaClient } from "@prisma/client"
-import { UserRepositorie } from "../repositories/user-repositorie"
 import bcrypt from "bcrypt";
+import { CollaboratorRepositorie } from "../repositories/collaborator-repositorie";
 
 // script para gerar usuarios e veiculos
 export default class CreateUsersScript{
    
     async execute(){
         const users =[ {
-            name:'Colaborador',
-            email:'colaborador@email.com',
+            name:'Atendente',
+            email:'atendente@email.com',
             password:bcrypt.hashSync('comigo123', 8),
-            role:'colaborador'
+            role:'atendente'
         },
         {
             name:'Administrador',
-            email:'adm@email.com',
+            email:'admin@email.com',
             password:bcrypt.hashSync('comigo123', 8),
-            role:'adm'
+            role:'admin'
         }
         ]
 
         const prisma = new PrismaClient()
 
         const result = await Promise.all(users.map(async (user)=>{
-            const result = await new UserRepositorie(prisma).get(user.email)
+            const result = await new CollaboratorRepositorie().findByEmail(user.email)
                 if(result){
                     return false
                 }
-                await new UserRepositorie(prisma).create(user)
+                await new CollaboratorRepositorie().create(user)
                 return true
         }))
 

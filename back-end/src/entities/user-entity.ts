@@ -6,12 +6,12 @@ import bcrypt from "bcrypt";
 import { IUserAuthenticated } from "../types/interface";
 
 
-interface IGetUser{
+interface IGetCollaborator{
     email:string
     password:string
 }
 
-interface  user{
+interface ICollaborator{
     id: number;
     name: string;
     email: string;
@@ -20,7 +20,7 @@ interface  user{
     createdAt: Date;
     updatedAt: Date;
 } 
-export default class User{
+export default class Collaborator{
     constructor(private readonly prismaClient: PrismaClient){}
 
     isValidEmail(email:string){
@@ -28,7 +28,7 @@ export default class User{
         return emailRegex.test(email)
     }
 
-    async getUser({email,password}:IGetUser){
+    async getUser({email,password}:IGetCollaborator){
         if(!email.trim()){
             AppError('É preciso enviar o email.')
         }
@@ -39,7 +39,7 @@ export default class User{
         return user
     }
 
-    async isValidUser({email,password}:IGetUser){
+    async isValidUser({email,password}:IGetCollaborator){
         const user = await this.prismaClient.collaborator.findFirst(
             {
                 where:{

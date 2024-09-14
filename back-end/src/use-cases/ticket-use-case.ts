@@ -1,6 +1,7 @@
 import { Ticket, Ticket_vehicle } from '@prisma/client';
 import TicketRepository from '../repositories/ticket-repositorie';
 import AppError from '../error/app-error';
+import TicketEntity, { ticketType } from '../entities/ticket-entity';
 
 class TicketUseCase {
   private ticketRepo: TicketRepository;
@@ -12,7 +13,7 @@ class TicketUseCase {
   // Criar um novo Ticket
   async createTicket(ticketData: {
     passive_contact: boolean;
-    contact_type: string;
+    contact_type: ticketType;
     type: string;
     reason: string;
     detail: string;
@@ -20,6 +21,15 @@ class TicketUseCase {
     vehicle_id: number; // ID do veículo
   }): Promise<{ ticket: Ticket; ticket_vehicle: Ticket_vehicle } | undefined> {
     try {
+      const ticket = new TicketEntity({
+        collaborator_id:ticketData.collaborator_id,
+        vehicle_id:ticketData.vehicle_id,
+        contactType:ticketData.contact_type,
+        detail:ticketData.detail,
+        passiveContact:ticketData.passive_contact,
+        reason:ticketData.reason,
+        type:ticketData.type
+      })
       return await this.ticketRepo.create(ticketData);
     } catch (error) {
       AppError('Erro ao criar ticket.', 500);

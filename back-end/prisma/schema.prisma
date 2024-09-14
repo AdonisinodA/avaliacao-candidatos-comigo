@@ -34,7 +34,7 @@ model Ticket{
   createdAt  DateTime @default(now()) 
   updatedAt  DateTime @updatedAt 
   
-  client Collaborator @relation(fields: [collaborator_id],references: [id])
+  collaborator Collaborator @relation(fields: [collaborator_id],references: [id])
   collaborator_id Int
 
   tickets_vehicles Ticket_vehicle[]

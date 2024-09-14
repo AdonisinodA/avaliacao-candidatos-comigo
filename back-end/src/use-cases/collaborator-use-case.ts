@@ -1,7 +1,8 @@
 import { PrismaClient } from "@prisma/client/"
-import User from "../../entities/user-entity"
-import AppError from "../../error/app-error"
-import { permissions } from "../../enums/permissions"
+import User from "../entities/user-entity"
+import AppError from "../error/app-error"
+import { permissions } from "../enums/permissions"
+
 
 interface ILogin{
     email:string

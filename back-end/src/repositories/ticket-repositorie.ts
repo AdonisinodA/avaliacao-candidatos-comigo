@@ -28,7 +28,7 @@ class TicketRepository {
           reason: ticketData.reason,
           detail: ticketData.detail,
           collaborator_id: ticketData.collaborator_id,
-          status:'Aguardando',
+          status:'Andamento',
           term: new Date(new Date().setDate(new Date().getDate() + 7))
         },
       });
