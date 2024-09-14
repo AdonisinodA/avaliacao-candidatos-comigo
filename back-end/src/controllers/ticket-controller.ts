@@ -1,15 +1,17 @@
 import {Response, Request, NextFunction, response} from 'express'
 import TicketUseCase from '../use-cases/ticket-use-case'
 import AppError from '../error/app-error';
+import { ticketType } from '../entities/ticket-entity';
+import { UpdateTicketInput } from '../repositories/ticket-repositorie';
 
 interface ITicketData {
     passive_contact: boolean;
-    contact_type: string;
+    contact_type: ticketType;
     type: string;
     reason: string;
     detail: string;
     collaborator_id: number;
-    vehicle_id: number;
+    vehicle_ids: number[]; 
 }
 
 export default class TicketController{
@@ -33,14 +35,11 @@ export default class TicketController{
             }
     }
 
-    static async edit(req:Request<{ticket_id?:number},{},Partial<ITicketData>>, res:Response, next: NextFunction){
+    static async edit(req:Request<{},{},UpdateTicketInput>, res:Response, next: NextFunction){
         try{
             const body = req.body
-            const {ticket_id} = req.params
-            if(!ticket_id){
-                AppError('Id do ticket não informado',400)
-            }
-            const ticket = new TicketUseCase().updateTicket(ticket_id!,body)
+           
+            const ticket = new TicketUseCase().updateTicket(body)
             res.status(200).json(ticket)
 
             }catch(error){

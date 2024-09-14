@@ -1,5 +1,16 @@
 import { PrismaClient, Ticket, Ticket_vehicle } from '@prisma/client';
-
+export interface UpdateTicketInput {
+  ticket_id: number;
+  passive_contact?: boolean;
+  contact_type?: string;
+  type?: string;
+  reason?: string;
+  detail?: string;
+  term?: Date;
+  status?: string;
+  collaborator_id?: number;
+  vehicle_ids?: number[]; // Novos IDs de veículos a serem conectados
+}
 class TicketRepository {
   private prisma: PrismaClient;
 
@@ -15,34 +26,30 @@ class TicketRepository {
     reason: string;
     detail: string;
     collaborator_id: number;
-    vehicle_id: number;
-  }): Promise<{ ticket: Ticket; ticket_vehicle: Ticket_vehicle }> {
-    // Transação iniciada (utilizando conceitos dba relacional ACID)
-    return this.prisma.$transaction(async (prisma) => {
-      // Criação do Ticket
-      const ticket = await prisma.ticket.create({
-        data: {
-          passive_contact: ticketData.passive_contact,
-          contact_type: ticketData.contact_type,
-          type: ticketData.type,
-          reason: ticketData.reason,
-          detail: ticketData.detail,
-          collaborator_id: ticketData.collaborator_id,
-          status:'Andamento',
-          term: new Date(new Date().setDate(new Date().getDate() + 7))
+    vehicle_ids: number[];
+  }) {
+    const newTicket = await this.prisma.ticket.create({
+      data: {
+        passive_contact:ticketData.passive_contact,
+        contact_type:ticketData.contact_type,
+        type:ticketData.type,
+        reason:ticketData.reason,
+        detail:ticketData.detail,
+        term:new Date(new Date().setDate(new Date().getDate() + 7)),
+        status:'Andamento',
+        collaborator_id:ticketData.collaborator_id,
+        tickets_vehicles: {
+          create: ticketData.vehicle_ids.map(vehicle_id => ({
+            vehicles: { connect: { id: vehicle_id } },
+          })),
         },
-      });
-
-      // Criação do Ticket_vehicle associado
-      const ticket_vehicle = await prisma.ticket_vehicle.create({
-        data: {
-          ticket_id: ticket.id,
-          vehicle_id: ticketData.vehicle_id,
-        },
-      });
-
-      return { ticket, ticket_vehicle };
+      },
+      include: {
+        tickets_vehicles: true, // Inclui os tickets_vehicles no retorno
+      },
     });
+
+    return newTicket;
   }
   // Listar todos os Tickets
   async findAll() {
@@ -66,20 +73,42 @@ class TicketRepository {
   }
 
   // Atualizar um Ticket por ID
-  async update(ticketId: number, updatedData: {
-    passive_contact?: boolean;
-    contact_type?: string;
-    type?: string;
-    reason?: string;
-    detail?: string;
-    collaborator_id?: number;
-  }): Promise<Ticket> {
-    return this.prisma.ticket.update({
-      where: { id: ticketId },
-      data: updatedData,
-    });
+  async updateTicketWithVehicles(input: UpdateTicketInput) {
+    const { ticket_id, passive_contact, contact_type, type, reason, detail, term, status, collaborator_id, vehicle_ids } = input;
+  
+    try {
+      // Atualiza o ticket e remove todos os veículos associados a ele antes de adicionar os novos.
+      const updatedTicket = await this.prisma.ticket.update({
+        where: { id: ticket_id },
+        data: {
+          passive_contact,
+          contact_type,
+          type,
+          reason,
+          detail,
+          term,
+          status,
+          collaborator_id,
+          // Remove todas as conexões de veículos anteriores
+          tickets_vehicles: {
+            deleteMany: {},
+            create: vehicle_ids ? vehicle_ids.map(vehicle_id => ({
+              vehicles: { connect: { id: vehicle_id } },
+            })) : [],
+          },
+        },
+        include: {
+          tickets_vehicles: true, 
+        },
+      });
+  
+      console.log('Ticket atualizado com sucesso:', updatedTicket);
+      return updatedTicket;
+    } catch (error) {
+      console.error('Erro ao atualizar o ticket:', error);
+      throw error;
+    }
   }
-
   // Deletar um Ticket por ID
   async delete(ticketId: number): Promise<Ticket> {
     return this.prisma.ticket.delete({

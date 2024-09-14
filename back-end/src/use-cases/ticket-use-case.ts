@@ -1,5 +1,5 @@
 import { Ticket, Ticket_vehicle } from '@prisma/client';
-import TicketRepository from '../repositories/ticket-repositorie';
+import TicketRepository, { UpdateTicketInput } from '../repositories/ticket-repositorie';
 import AppError from '../error/app-error';
 import TicketEntity, { ticketType } from '../entities/ticket-entity';
 
@@ -18,19 +18,28 @@ class TicketUseCase {
     reason: string;
     detail: string;
     collaborator_id: number;
-    vehicle_id: number; // ID do veículo
-  }): Promise<{ ticket: Ticket; ticket_vehicle: Ticket_vehicle } | undefined> {
+    vehicle_ids: number[]; 
+  }) {
     try {
       const ticket = new TicketEntity({
         collaborator_id:ticketData.collaborator_id,
-        vehicle_id:ticketData.vehicle_id,
+        vehicle_ids:ticketData.vehicle_ids,
         contactType:ticketData.contact_type,
         detail:ticketData.detail,
         passiveContact:ticketData.passive_contact,
         reason:ticketData.reason,
         type:ticketData.type
       })
-      return await this.ticketRepo.create(ticketData);
+      await this.ticketRepo.create({
+        collaborator_id:ticket.collaboratorId,
+        contact_type:ticket.contactType,
+        detail:ticket.detail,
+        passive_contact:ticket.passiveContact,
+        reason:ticket.reason,
+        type:ticket.reason,
+        vehicle_ids:ticket.vehicleIds
+
+      });
     } catch (error) {
       AppError('Erro ao criar ticket.', 500);
     }
@@ -55,16 +64,9 @@ class TicketUseCase {
   }
 
   // Atualizar um Ticket por ID
-  async updateTicket(ticketId: number, updatedData: {
-    passive_contact?: boolean;
-    contact_type?: string;
-    type?: string;
-    reason?: string;
-    detail?: string;
-    collaborator_id?: number;
-  }) {
+  async updateTicket(updatedData:UpdateTicketInput) {
     try {
-      return await this.ticketRepo.update(ticketId, updatedData);
+      return await this.ticketRepo.updateTicketWithVehicles(updatedData);
     } catch (error) {
       AppError('Erro ao atualizar ticket');
     }

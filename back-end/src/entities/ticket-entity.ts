@@ -11,7 +11,7 @@ export interface ITicket {
   reason: string;
   detail: string;
   collaborator_id:number
-  vehicle_id:number
+  vehicle_ids:number[]
 }
 
 class TicketEntity {
@@ -35,8 +35,8 @@ class TicketEntity {
   public get reason(): string {
     return this.ticket.reason;
   }
-  public get vehicleId(): number {
-    return this.ticket.vehicle_id;
+  public get vehicleIds(): number[] {
+    return this.ticket.vehicle_ids;
   }
   public get collaboratorId(): number {
     return this.ticket.collaborator_id;
