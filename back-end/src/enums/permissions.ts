@@ -1,3 +1,3 @@
-export type permissions = 'colaborador' | 'adm'
+export type permissions = 'atendente' | 'admin'
 
-export const listPermissions =['colaborador', 'adm']
+export const listPermissions =['atendente', 'admin']

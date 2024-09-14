@@ -12,7 +12,7 @@ export default class PermissionsMiddleware {
       }
 
       // Verifica se o usuário tem a permissão necessária
-      if (userRole === 'adm' || (userRole === 'colaborador' && requiredRole === 'colaborador')) {
+      if (userRole === 'admin' || (userRole === 'atendente' && requiredRole === 'atendente')) {
         return next(); 
       }
 
