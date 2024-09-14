@@ -6,6 +6,7 @@ import { Filter } from "./components/Filter";
 import useToast from "@/error/UseModalError";
 import api from "@/api/axios";
 import { Ticket } from "@/types/ticket";
+import SideModal from "./components/SideModal";
 
 
 export default function InitialPage() {
@@ -33,6 +34,7 @@ export default function InitialPage() {
         <Header/>
       <main className="container mx-auto p-4">
         <div className="bg-white shadow-md rounded-lg p-6">
+          <SideModal/>
             <Filter search={search} setSearch={setSearch}/>
             <Table listTicket={listTicket} />
         </div>
