@@ -24,6 +24,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const router = useRouter();
 
     useEffect(()=>{
+      verifyUserLogin()
     api.interceptors.response.use(
         (response) => response,
         (error) => {
@@ -33,6 +34,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             return Promise.reject(error);
         }
         );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[router])
 
   const logout = () => {

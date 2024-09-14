@@ -20,16 +20,16 @@
 ```typescript
 const users = [
   {
-    name: 'Colaborador',
-    email: 'colaborador@email.com',
+    name: 'Atendente',
+    email: 'atendente@email.com',
     password: 'comigo123',
-    role: 'colaborador'
+    role: 'atendente'
   },
   {
     name: 'Administrador',
-    email: 'adm@email.com',
+    email: 'admin@email.com',
     password: 'comigo123',
-    role: 'adm'
+    role: 'admin'
   }
 ];
 ```

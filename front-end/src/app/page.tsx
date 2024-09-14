@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
  "use client"
-import React, {useEffect, useState } from "react";
+import React, { useState } from "react";
 import loginLogo from "../../public/logoLogin.svg"
 import Image from 'next/image'
 import useErrorModal from "@/error/UseModalError";
@@ -10,7 +10,7 @@ import { useAuth } from "@/context/Auth";
 
 
 function Login(){
-  const {login,verifyUserLogin} = useAuth()
+  const {login} = useAuth()
   const { showToast, Toast } = useErrorModal();
 
 
@@ -18,9 +18,7 @@ function Login(){
   const [password, setPassword] = useState<string>('')
   const [keepConnected, setKeepConnected] = useState<boolean>(false)
 
-    useEffect(()=>{
-      verifyUserLogin()
-    },[verifyUserLogin])
+   
 
   async function onClickLogin(event:React.FormEvent){
     try{
