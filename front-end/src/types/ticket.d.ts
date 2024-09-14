@@ -39,3 +39,14 @@ interface TicketVehicle {
 
 // Tipo para a resposta da query
 type TicketsWithVehicles = Ticket[];
+
+
+type IFormTicket = {
+  passive_contact: boolean;
+  contact_type: string;
+  type: string;
+  reason: string;
+  detail: string;
+  collaborator_id: string;
+  vehicle_id: string;
+}

@@ -46,7 +46,6 @@ class TicketRepository {
   }
   // Listar todos os Tickets
   async findAll() {
-    console.log('entrou em find all')
     const tickets = await this.prisma.ticket.findMany({
       include: {
         tickets_vehicles: {
