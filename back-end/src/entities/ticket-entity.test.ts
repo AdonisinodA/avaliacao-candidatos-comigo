@@ -1,47 +1,94 @@
-import AppError from '../error/app-error';
-import Ticket, { ITicket } from './ticket-entity';
+import { CollaboratorRepositorie } from '../repositories/collaborator-repositorie';
+import TicketEntity, { ITicket } from './ticket-entity';
 
-jest.mock('../error/app-error', () => {
-  return jest.fn((message: string) => {
-    throw new Error(message);
-  });
-});
+jest.mock('../repositories/collaborator-repositorie'); 
 
-describe('Ticket Class Validation', () => {
-  const validTicket: ITicket = {
-    passiveContact: true,
-    contactType: 'Suporte',
-    type: 'inquiry',
-    reason: 'Informação adicional necessária',
-    detail: 'Descrição detalhada do problema',
-  };
+describe('TicketEntity', () => {
+  let ticketData: ITicket;
 
-  it('Deve criar uma instância válida de Ticket', () => {
-    expect(() => new Ticket(validTicket)).not.toThrow();
-  });
+  beforeEach(() => {
+    ticketData = {
+      passiveContact: true,
+      contactType: 'Operacional',
+      type: 'Operacional',
+      reason: 'Algum motivo',
+      detail: 'Explicação detalhada',
+      collaborator_id: 1,
+      vehicle_ids: [123, 456],
+    };
 
-  it('Deve lançar erro se passiveContact não for booleano', () => {
-    const invalidTicket = { ...validTicket, passiveContact: 'true' as any };
-    expect(() => new Ticket(invalidTicket)).toThrow('O campo "Contato Passivo" deve ser um valor booleano.');
+    (CollaboratorRepositorie.prototype.findById as jest.Mock).mockResolvedValue({ id: 1 });
   });
 
-  it('Deve lançar erro se contactType for inválido', () => {
-    const invalidTicket = { ...validTicket, contactType: 'Invalido' as any };
-    expect(() => new Ticket(invalidTicket)).toThrow('O campo "Tipo de Contato" deve ser um dos seguintes: Operacional, Suporte, Relacionamento, Vendas.');
+  it('deve criar um TicketEntity com sucesso', () => {
+    const ticketEntity = new TicketEntity(ticketData);
+
+    expect(ticketEntity.passiveContact).toBe(ticketData.passiveContact);
+    expect(ticketEntity.contactType).toBe(ticketData.contactType);
+    expect(ticketEntity.type).toBe(ticketData.type);
+    expect(ticketEntity.reason).toBe(ticketData.reason);
+    expect(ticketEntity.detail).toBe(ticketData.detail);
+    expect(ticketEntity.collaboratorId).toBe(ticketData.collaborator_id);
+    expect(ticketEntity.vehicleIds).toEqual(ticketData.vehicle_ids);
   });
 
-  it('Deve lançar erro se type for inválido', () => {
-    const invalidTicket = { ...validTicket, type: 'invalid-type' };
-    expect(() => new Ticket(invalidTicket)).toThrow('O campo "Tipo" deve ser um dos seguintes: inquiry, complaint, suggestion.');
+  it('deve lançar um erro se passiveContact não for um booleano', () => {
+    ticketData.passiveContact = "notBoolean" as any;
+    const ticketEntity = new TicketEntity(ticketData);
+
+    expect(() => ticketEntity['validatePassiveContact']()).toThrow('O campo "Contato Passivo" deve ser um valor booleano.');
   });
 
-  it('Deve lançar erro se reason estiver vazio', () => {
-    const invalidTicket = { ...validTicket, reason: '' };
-    expect(() => new Ticket(invalidTicket)).toThrow('O campo "Motivo" não pode estar vazio.');
+  it('deve lançar um erro se contactType for inválido', () => {
+    ticketData.contactType = 'InvalidType' as any;
+    const ticketEntity = new TicketEntity(ticketData);
+
+    expect(() => ticketEntity['validateContactType']()).toThrow(
+      'O campo "Tipo de Contato" deve ser um dos seguintes: telefone, email, chat.'
+    );
   });
 
-  it('Deve lançar erro se detail estiver vazio', () => {
-    const invalidTicket = { ...validTicket, detail: '' };
-    expect(() => new Ticket(invalidTicket)).toThrow('O campo "Detalhe" não pode estar vazio.');
+  it('deve lançar um erro se type for inválido', () => {
+    ticketData.type = 'InvalidType' as any;
+    const ticketEntity = new TicketEntity(ticketData);
+
+    expect(() => ticketEntity['validateType']()).toThrow(
+      'O campo "Tipo" deve ser um dos seguintes: Operacional, Suporte, Relacionamento, Vendas.'
+    );
+  });
+
+  it('deve lançar um erro se reason estiver vazio', () => {
+    ticketData.reason = '';
+    const ticketEntity = new TicketEntity(ticketData);
+
+    expect(() => ticketEntity['validateReason']()).toThrow('O campo "Motivo" não pode estar vazio.');
+  });
+
+  it('deve lançar um erro se detail estiver vazio', () => {
+    ticketData.detail = '';
+    const ticketEntity = new TicketEntity(ticketData);
+
+    expect(() => ticketEntity['validateDetail']()).toThrow('O campo "Detalhe" não pode estar vazio.');
+  });
+
+  it('deve validar a existência do colaborador', async () => {
+    const ticketEntity = new TicketEntity(ticketData);
+
+    await expect(ticketEntity['validateCollaboratorId']()).resolves.not.toThrow();
+  });
+
+  it('deve lançar um erro se o colaborador não for encontrado', async () => {
+    (CollaboratorRepositorie.prototype.findById as jest.Mock).mockResolvedValue(null);
+
+    const ticketEntity = new TicketEntity(ticketData);
+
+    await expect(ticketEntity['validateCollaboratorId']()).rejects.toThrow('Colaborador não encontrado.');
+  });
+
+  it('deve lançar um erro se collaboratorId estiver ausente', async () => {
+    ticketData.collaborator_id = null as any;
+    const ticketEntity = new TicketEntity(ticketData);
+
+    await expect(ticketEntity['validateCollaboratorId']()).rejects.toThrow('Colaborador id não encontrado.');
   });
 });

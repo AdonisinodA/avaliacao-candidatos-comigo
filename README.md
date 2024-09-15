@@ -43,7 +43,7 @@ const users = [
 - [x] 2. Nível 2 - Persistência
 - [x] 3. Nível 3 - Autenticação
 - [x] 4. Nível 4 - Gerenciamento de permissões
-- [ ] 5. Nível 5 - Testes
+- [x] 5. Nível 5 - Testes unitários
 - [x] 6. Nível 6 - Infra
 - [ ] 7. Nível 7 - Cloud
 - [ ] 8. Nível 8 - Monitoramento e Observabilidade
