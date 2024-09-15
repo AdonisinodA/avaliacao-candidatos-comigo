@@ -27,7 +27,8 @@ export default class TicketController{
     }
     static async list(req:Request, res:Response, next: NextFunction){
         try{
-            const ticket = new TicketUseCase().listAllTickets()
+            const ticket = await new TicketUseCase().listAllTickets()
+            console.log("🚀 ~ TicketController ~ list ~ ticket:", ticket)
             res.status(200).json(ticket)
 
             }catch(error){

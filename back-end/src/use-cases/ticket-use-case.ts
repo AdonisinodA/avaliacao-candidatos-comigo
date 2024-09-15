@@ -34,7 +34,7 @@ class TicketUseCase {
         detail:ticket.detail,
         passive_contact:ticket.passiveContact,
         reason:ticket.reason,
-        type:ticket.reason,
+        type:ticket.type,
         vehicle_ids:ticket.vehicleIds
 
       });
