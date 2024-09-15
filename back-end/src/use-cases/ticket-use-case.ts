@@ -10,7 +10,6 @@ class TicketUseCase {
     this.ticketRepo = new TicketRepository();
   }
 
-  // Criar um novo Ticket
   async createTicket(ticketData: {
     passive_contact: boolean;
     contact_type: ticketType;
@@ -20,15 +19,14 @@ class TicketUseCase {
     collaborator_id: number;
     vehicle_ids: number[]; 
   }) {
-    try {
       const ticket = new TicketEntity({
-        collaborator_id:ticketData.collaborator_id,
-        vehicle_ids:ticketData.vehicle_ids,
-        contactType:ticketData.contact_type,
-        detail:ticketData.detail,
-        passiveContact:ticketData.passive_contact,
-        reason:ticketData.reason,
-        type:ticketData.type
+        collaborator_id: ticketData.collaborator_id,
+        vehicle_ids: ticketData.vehicle_ids,
+        contactType: ticketData.contact_type,
+        detail: ticketData.detail,
+        passiveContact: ticketData.passive_contact,
+        reason: ticketData.reason,
+        type: ticketData.type
       })
       await this.ticketRepo.create({
         collaborator_id:ticket.collaboratorId,
@@ -40,9 +38,6 @@ class TicketUseCase {
         vehicle_ids:ticket.vehicleIds
 
       });
-    } catch (error) {
-      AppError('Erro ao criar ticket.', 500);
-    }
   }
 
   // Listar todos os Tickets

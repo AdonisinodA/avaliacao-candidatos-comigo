@@ -18,6 +18,7 @@ class TicketEntity {
   constructor(private ticket: ITicket) {
     this.ticket = ticket;
     this.validate();
+   
   }
 
   public get passiveContact(): boolean {
@@ -55,7 +56,7 @@ class TicketEntity {
 
   // Função para validar contact_type
   private validateContactType() {
-    const validContactTypes = ['Operacional', 'Suporte', 'Relacionamento', 'Vendas'];
+    const validContactTypes = ['telefone', 'email', 'chat'];
     if (!validContactTypes.includes(this.contactType)) {
       AppError(`O campo "Tipo de Contato" deve ser um dos seguintes: ${validContactTypes.join(', ')}.`);
     }
@@ -63,7 +64,7 @@ class TicketEntity {
 
   // Função para validar type
   private validateType() {
-    const validTypes = ['inquiry', 'complaint', 'suggestion'];
+    const validTypes = ['Operacional', 'Suporte', 'Relacionamento', 'Vendas'];
     if (!validTypes.includes(this.type)) {
       AppError(`O campo "Tipo" deve ser um dos seguintes: ${validTypes.join(', ')}.`);
     }

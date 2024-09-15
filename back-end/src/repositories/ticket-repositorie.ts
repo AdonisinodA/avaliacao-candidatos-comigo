@@ -1,4 +1,5 @@
 import { PrismaClient, Ticket, Ticket_vehicle } from '@prisma/client';
+import { DateUtils } from '../utils/date';
 export interface UpdateTicketInput {
   ticket_id: number;
   passive_contact?: boolean;
@@ -6,7 +7,6 @@ export interface UpdateTicketInput {
   type?: string;
   reason?: string;
   detail?: string;
-  term?: Date;
   status?: string;
   collaborator_id?: number;
   vehicle_ids?: number[]; // Novos IDs de veículos a serem conectados
@@ -35,7 +35,7 @@ class TicketRepository {
         type:ticketData.type,
         reason:ticketData.reason,
         detail:ticketData.detail,
-        term:new Date(new Date().setDate(new Date().getDate() + 7)),
+        term:DateUtils.addBusinessDays(new Date(),3),
         status:'Andamento',
         collaborator_id:ticketData.collaborator_id,
         tickets_vehicles: {
@@ -74,7 +74,7 @@ class TicketRepository {
 
   // Atualizar um Ticket por ID
   async updateTicketWithVehicles(input: UpdateTicketInput) {
-    const { ticket_id, passive_contact, contact_type, type, reason, detail, term, status, collaborator_id, vehicle_ids } = input;
+    const { ticket_id, passive_contact, contact_type, type, reason, detail, status, collaborator_id, vehicle_ids } = input;
   
     try {
       // Atualiza o ticket e remove todos os veículos associados a ele antes de adicionar os novos.
@@ -86,7 +86,6 @@ class TicketRepository {
           type,
           reason,
           detail,
-          term,
           status,
           collaborator_id,
           // Remove todas as conexões de veículos anteriores
@@ -102,7 +101,6 @@ class TicketRepository {
         },
       });
   
-      console.log('Ticket atualizado com sucesso:', updatedTicket);
       return updatedTicket;
     } catch (error) {
       console.error('Erro ao atualizar o ticket:', error);
