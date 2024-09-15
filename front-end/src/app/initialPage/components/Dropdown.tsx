@@ -35,7 +35,7 @@ export default function DropDown() {
         onClick={() => setIsOpen(!isOpen)}
         className="inline-flex justify-center w-full items-center  shadow-sm px-4 py-2 bg-primary text-sm font-medium "
       >
-        <span className="mr-2">{user?.name ?? 'Não reconhecido'}</span> <FaRegUser  />
+        <span className="mr-2">{user ? user.name : 'Não reconhecido'}</span> <FaRegUser  />
       </button>
 
       {isOpen && (

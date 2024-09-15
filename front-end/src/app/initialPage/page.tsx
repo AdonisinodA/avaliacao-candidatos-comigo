@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { Header } from "./components/Header";
 import { Table } from "./components/Table";
-import { Filter } from "./components/Filter";
+import { Filter } from "./components/filter/Filter";
 import { IFormTicket, Ticket } from "@/types/ticket";
 import SideModal from "../../components/SideModal";
 import { FormTicket } from "./components/form/FormTicket";

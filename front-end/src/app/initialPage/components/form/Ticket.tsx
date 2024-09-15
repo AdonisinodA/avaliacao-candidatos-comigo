@@ -1,5 +1,5 @@
 import useToast from "@/components/modal/UseModal";
-import { SelectMulti } from "@/components/Select";
+import { SelectMulti } from "@/components/SelectMulti";
 import { listVehicle } from "@/service/api";
 import { IFormTicket, Vehicle } from "@/types/ticket";
 import { useEffect, useState } from "react";

@@ -2,6 +2,7 @@
 
 import { Dispatch, SetStateAction } from "react"
 import { GoPlus } from "react-icons/go";
+import FilterBar from "./FilterBar";
 interface IProps{
     search: string
     setSearch: Dispatch<SetStateAction<string>>
@@ -11,7 +12,7 @@ interface IProps{
 export function Filter({search,setSearch, openModal}:IProps){
 
     return <>
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex space-x-3 items-center mb-4">
             <div className="flex space-x-2">
               <button onClick={openModal} className="bg-primary text-white px-4 py-2 rounded-xl flex items-center gap-2 hover:brightness-125 hover:scale-105">
                 Abrir Ticket <span><GoPlus size={20}/></span>
@@ -25,8 +26,7 @@ export function Filter({search,setSearch, openModal}:IProps){
               />
             </div>
             <div className="flex space-x-2">
-              {/* Filtros */}
-          
+              <FilterBar/>
             </div>
           </div>
     </>
