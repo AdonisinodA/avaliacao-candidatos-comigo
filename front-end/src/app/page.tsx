@@ -3,15 +3,15 @@
 import React, { useState } from "react";
 import loginLogo from "../../public/logoLogin.svg"
 import Image from 'next/image'
-import useErrorModal from "@/error/UseModalError";
 import api from "@/api/axios";
 import { useAuth } from "@/context/Auth";
+import useToast from "@/components/modal/UseModal";
 
 
 
 function Login(){
   const {login} = useAuth()
-  const { showToast, Toast } = useErrorModal();
+  const { showToast, Toast } = useToast();
 
 
   const [email, setEmail] = useState<string>('')

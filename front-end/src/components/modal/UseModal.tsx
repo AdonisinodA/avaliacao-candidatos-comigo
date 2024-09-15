@@ -1,12 +1,13 @@
 // hooks/useErrorModal.ts
 import { useCallback, useState } from 'react';
-import Image from 'next/image';
-import logo from '../../public/comigoLogo.png'
+
 import { AxiosError } from 'axios';
+import { Modal } from './Modal';
 
 const useToast = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [message, setMessage] = useState('');
+  const [error,setError] = useState<boolean>(false) 
 
   const showToast = useCallback((message: unknown) => {
     let msg = 'Erro interno'
@@ -15,7 +16,13 @@ const useToast = () => {
     }
     if(message instanceof AxiosError){
       msg = message.response?.data.message ?? 'Erro interno'
+      setError(true)
     }
+    else if( message instanceof Error){
+      msg = message.message
+      setError(true)
+    }
+    
     setMessage(msg);
     setIsVisible(true);
 
@@ -29,12 +36,7 @@ const useToast = () => {
     if (!isVisible) return null;
 
     return (
-      <div id="toast-default" className="flex absolute items-center w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800" role="alert">
-    <div className="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-blue-500 bg-blue-100 rounded-lg dark:bg-blue-800 dark:text-blue-200">
-    <Image width={50} height={50} src={logo} alt='logo'/>
-    </div>
-    <div className="ms-3 text-sm font-normal">{message}</div>
-  </div>
+     <Modal message={message} error={error}/>
   );
 
   };
@@ -48,3 +50,5 @@ const useToast = () => {
 };
 
 export default useToast;
+
+

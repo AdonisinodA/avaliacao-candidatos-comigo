@@ -1,3 +1,4 @@
+import useToast from "@/components/modal/UseModal";
 import { SelectMulti } from "@/components/Select";
 import { listVehicle } from "@/service/api";
 import { IFormTicket, Vehicle } from "@/types/ticket";
@@ -7,12 +8,14 @@ import { useFormContext } from "react-hook-form";
 function Ticket(){
 const {watch, setValue} = useFormContext<IFormTicket>()
 const [vehicles, setVehicles] = useState<Vehicle[]>([])
+const {showToast,Toast} = useToast()
+
 async function fetchList(){
   try{
    const result =  await listVehicle()
    setVehicles(result)
   }catch(error){
-
+    showToast(error)
   }
 }
 
@@ -48,6 +51,7 @@ useEffect(()=>{
       </div>
 
       <div className="mb-4">
+        <span className="text-sm text-gray-700"> Veículo(s)</span>
         <SelectMulti 
           onchange={(dado) => {
             setValue('vehicle_ids',dado.map(option=> Number(option.value)) )
@@ -62,6 +66,7 @@ useEffect(()=>{
           placeholder="Selecione"
         />
       </div>
+      <Toast/>
     </div>
   );
 };

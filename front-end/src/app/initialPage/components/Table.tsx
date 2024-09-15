@@ -1,16 +1,43 @@
 'use client'
 
+import ConfirmModal from "@/components/modal/ConfirmModal";
+import useToast from "@/components/modal/UseModal";
+import AppError from "@/error/appError";
+import { deleteTicket } from "@/service/api";
+import localStorageService from "@/service/localStorage";
 import { Ticket } from "@/types/ticket"
-
-
+import { DateUtils } from "@/util/date"
+import { useState } from "react";
+import { FaRegTrashAlt } from "react-icons/fa";
+import { HiOutlinePencil } from "react-icons/hi2";
 
 
 
 interface IProps{
     listTicket: Ticket[]
+    fetchList(): Promise<void>
 }
 
-export function Table({listTicket}:IProps){
+export function Table({listTicket, fetchList}:IProps){
+  const user = localStorageService.getUser()
+  const [openModal, setOpenModal] = useState<boolean>(false)
+  const [ticketId, setTicketId] = useState<number>()
+
+
+  const {Toast,showToast} = useToast()
+  async function onDeleteTicket(){
+    try{
+      if(!ticketId){
+        AppError('ID do ticket não foi enviado')
+      }
+      await deleteTicket(ticketId as number)
+      await fetchList()
+      showToast('Ticket deletado com sucesso')
+    }catch(error){
+      showToast(error)
+    }
+
+  }
 
     return <>
       <table className="table-auto w-full border-collapse">
@@ -20,7 +47,6 @@ export function Table({listTicket}:IProps){
                 <th className="border p-2">Tipo</th>
                 <th className="border p-2">Motivo</th>
                 <th className="border p-2">Descrição</th>
-                <th className="border p-2">Cliente</th>
                 <th className="border p-2">Veículo</th>
                 <th className="border p-2">Data de Abertura</th>
                 <th className="border p-2">Prazo</th>
@@ -31,26 +57,37 @@ export function Table({listTicket}:IProps){
             <tbody>
               {listTicket.length >0 && listTicket.map((ticket) => (
                   <tr key={ticket.id}>
-                    <td className="border p-2">{ticket.id}</td>
-                    <td className="border p-2">{ticket.type}</td>
-                    <td className="border p-2">{ticket.reason}</td>
-                    <td className="border p-2">{ticket.detail}</td>
-                    <td className="border p-2">{ticket.tickets_vehicles.join(', ')}</td>
-                    <td className="border p-2">{ticket.createdAt}</td>
-                    {/* <td className="border p-2">{ticket.term}</td>
-                    <td className="border p-2">{ticket.status}</td> */}
-                    <td className="border p-2 flex space-x-2 justify-center">
-                      {/* Ações de editar e excluir */}
-                      <button className="text-blue-500 hover:text-blue-700">
-                        ✏️
+                    <td className="border p-2" align="center">{ticket.id}</td>
+                    <td className="border p-2" align="center">{ticket.type}</td>
+                    <td className="border p-2" align="center">{ticket.reason}</td>
+                    <td className="border p-2" align="center">{ticket.detail}</td>
+                    <td className="border p-2" align="center">{ticket.tickets_vehicles.map((objec)=>objec.vehicles.plate).join(', ')}</td>
+                    <td className="border p-2" align="center">{DateUtils.formatDate(new Date(ticket.createdAt))}</td>
+                    <td className="border p-2" align="center">{DateUtils.formatDate(new Date(ticket.term))}</td>
+                    <td className="border p-2" align="center">{ticket.status}</td>
+                    <td className="border p-2 space-x-2 justify-center" align="center">
+                      <button className="text-black/50 hover:text-black">
+                      <HiOutlinePencil/>
                       </button>
-                      <button className="text-red-500 hover:text-red-700">
-                        🗑️
-                      </button>
+                      {user?.role === 'admin' &&
+                          <button onClick={()=>{
+                            setTicketId(ticket.id)
+                            setOpenModal(true)
+                          }} className="text-red-500 hover:text-red-700">
+                          <FaRegTrashAlt/>
+                        </button>
+                      }
                     </td>
                   </tr>
                 ))}
             </tbody>
           </table>
+          <Toast/>
+          <ConfirmModal
+          isOpen={openModal}
+          message={`Deseja realmente deletar o ticket de ID ${ticketId}?`}
+          onClose={()=>{ setOpenModal(false)}}
+          onConfirm={()=>{onDeleteTicket()}}
+          />
     </>
 }

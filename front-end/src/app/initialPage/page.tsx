@@ -3,11 +3,11 @@ import { useEffect, useState } from "react";
 import { Header } from "./components/Header";
 import { Table } from "./components/Table";
 import { Filter } from "./components/Filter";
-import useToast from "@/error/UseModalError";
 import { Ticket } from "@/types/ticket";
 import SideModal from "../../components/SideModal";
 import { FormTicket } from "./components/form/FormTicket";
 import {  listTickets } from "@/service/api";
+import useToast from "@/components/modal/UseModal";
 
 
 export default function InitialPage() {
@@ -34,11 +34,11 @@ export default function InitialPage() {
   return (
     <div className="min-h-screen bg-gray-100">
         <Header/>
-      <main className="container mx-auto p-4">
+      <main className="px-4 ">
         <div className="bg-white shadow-md rounded-lg p-6 ">
-          <SideModal closeModal={closeModal} isOpen={isOpen}><FormTicket/> </SideModal>
+          <SideModal closeModal={closeModal} isOpen={isOpen}><FormTicket fetchList={fetchList}/> </SideModal>
             <Filter search={search} setSearch={setSearch} openModal={openModal}/>
-            <Table listTicket={listTicket} />
+            <Table listTicket={listTicket} fetchList={fetchList} />
         </div>
       </main>
       <Toast/>

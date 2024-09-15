@@ -29,7 +29,7 @@ export class CollaboratorRepositorie{
         return user
     }
     async findById(collaboratorId: number): Promise<Collaborator | null> {
-        return this.prisma.collaborator.findUnique({
+        return await this.prisma.collaborator.findUnique({
           where: { id: collaboratorId },
         });
       }

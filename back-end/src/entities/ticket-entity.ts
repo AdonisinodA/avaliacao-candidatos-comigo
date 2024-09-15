@@ -17,8 +17,6 @@ export interface ITicket {
 class TicketEntity {
   constructor(private ticket: ITicket) {
     this.ticket = ticket;
-    this.validate();
-   
   }
 
   public get passiveContact(): boolean {
@@ -87,6 +85,9 @@ class TicketEntity {
   //Função pra verificar se o colaborador existe
   private async validateCollaboratorId(){
     const collaboratorRepo = new CollaboratorRepositorie()
+   if(!this.collaboratorId){
+     AppError('Colaborador id não encontrado.')
+   }
     const collaborator = await collaboratorRepo.findById(this.collaboratorId)
     if(!collaborator){
       AppError('Colaborador não encontrado.',404)
@@ -94,7 +95,7 @@ class TicketEntity {
   }
 
   // Função geral para validar os dados
-  private async validate() {
+  public async validate() {
     this.validatePassiveContact();
     this.validateContactType();
     this.validateType();

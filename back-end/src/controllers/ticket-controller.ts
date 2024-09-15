@@ -1,6 +1,5 @@
 import {Response, Request, NextFunction, response} from 'express'
 import TicketUseCase from '../use-cases/ticket-use-case'
-import AppError from '../error/app-error';
 import { ticketType } from '../entities/ticket-entity';
 import { UpdateTicketInput } from '../repositories/ticket-repositorie';
 
@@ -19,7 +18,7 @@ export default class TicketController{
     static async create(req:Request<{},{},ITicketData>, res:Response, next: NextFunction){
         try{
         const body = req.body
-        const ticket = new TicketUseCase().createTicket(body)
+        const ticket = await new TicketUseCase().createTicket(body)
         res.status(201).json(ticket)
         }catch(error){
         next(error)
@@ -28,7 +27,6 @@ export default class TicketController{
     static async list(req:Request, res:Response, next: NextFunction){
         try{
             const ticket = await new TicketUseCase().listAllTickets()
-            console.log("🚀 ~ TicketController ~ list ~ ticket:", ticket)
             res.status(200).json(ticket)
 
             }catch(error){
@@ -40,7 +38,7 @@ export default class TicketController{
         try{
             const body = req.body
            
-            const ticket = new TicketUseCase().updateTicket(body)
+            const ticket = await new TicketUseCase().updateTicket(body)
             res.status(200).json(ticket)
 
             }catch(error){
@@ -48,13 +46,14 @@ export default class TicketController{
             }
     }
 
-    static async delete(req:Request, res:Response, next: NextFunction){
+    static async delete(req:Request<{ticket_id?:number}>, res:Response, next: NextFunction){
         try{
-            const body = req.body
-            const ticket = new TicketUseCase().deleteTicket(body)
+            const {ticket_id} = req.params
+            const ticket = await new TicketUseCase().deleteTicket(ticket_id as number)
             res.status(200).json(ticket)
 
             }catch(error){
+                console.log('erro caiu aqui')
                 next(error)
             }
     }

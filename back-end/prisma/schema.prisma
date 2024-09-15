@@ -57,10 +57,10 @@ model Ticket_vehicle{
   createdAt  DateTime @default(now()) 
   updatedAt  DateTime @updatedAt 
 
-  tickets Ticket @relation(fields: [ticket_id], references: [id])
+  tickets Ticket @relation(fields: [ticket_id], references: [id],  onDelete: Cascade)
   ticket_id Int
 
-  vehicles Vehicle @relation(fields: [vehicle_id], references: [id])
+  vehicles Vehicle @relation(fields: [vehicle_id], references: [id],  onDelete: Cascade)
   vehicle_id Int
 
 }

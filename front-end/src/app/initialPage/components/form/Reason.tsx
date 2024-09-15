@@ -3,7 +3,6 @@ import { IFormTicket } from '@/types/ticket';
 import { DateUtils } from '@/util/date';
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
-import { FaSearch } from "react-icons/fa";
 
 function Reason(){
   const businessDays = 3;
@@ -15,17 +14,6 @@ function Reason(){
   return (
     <div className='overflow-y-auto'>
       <h1 className="font-semibold">Qual o motivo desse ticket?</h1>
-
-      <div className="relative mb-4 mx-2">
-        <input
-          type="text"
-          placeholder="Pesquisar"
-          className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-        />
-          <div className="absolute top-3 right-3 w-5 h-5 text-gray-400">
-            <FaSearch/>
-        </div>
-      </div>
 
       <div className="space-y-2 mb-6">
         {['Motivo 1', 'Motivo 2', 'Motivo 3'].map((reason, index) => (

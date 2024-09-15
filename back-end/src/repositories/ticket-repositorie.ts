@@ -109,7 +109,7 @@ class TicketRepository {
   }
   // Deletar um Ticket por ID
   async delete(ticketId: number): Promise<Ticket> {
-    return this.prisma.ticket.delete({
+    return await this.prisma.ticket.delete({
       where: { id: ticketId },
     });
   }

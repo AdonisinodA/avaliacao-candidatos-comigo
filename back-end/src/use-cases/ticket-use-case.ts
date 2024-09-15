@@ -19,7 +19,7 @@ class TicketUseCase {
     collaborator_id: number;
     vehicle_ids: number[]; 
   }) {
-      const ticket = new TicketEntity({
+      const ticket =  new TicketEntity({
         collaborator_id: ticketData.collaborator_id,
         vehicle_ids: ticketData.vehicle_ids,
         contactType: ticketData.contact_type,
@@ -28,6 +28,7 @@ class TicketUseCase {
         reason: ticketData.reason,
         type: ticketData.type
       })
+      await ticket.validate()
       await this.ticketRepo.create({
         collaborator_id:ticket.collaboratorId,
         contact_type:ticket.contactType,
@@ -70,10 +71,13 @@ class TicketUseCase {
   // Deletar um Ticket por ID
   async deleteTicket(ticketId: number) {
     try {
+      if(!ticketId){
+        AppError('Ticket para ser deletado não foi informado')
+      }
+      ticketId =  Number(ticketId)
       return await this.ticketRepo.delete(ticketId);
     } catch (error) {
-      console.error('Error deleting ticket:', error);
-      AppError('Erro ao deletar ticket');
+       AppError('Erro ao deletar ticket');
     }
   }
 }

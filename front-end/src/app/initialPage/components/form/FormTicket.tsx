@@ -8,10 +8,18 @@ import { FaCheck } from "react-icons/fa";
 import { Contact } from "./Contact";
 import Ticket from "./Ticket";
 import Reason from "./Reason";
+import useToast from "@/components/modal/UseModal";
+import { createTicket } from "@/service/api";
+import {  validateContact, validateReason, validateTicket } from "../../service/validateTicket";
 
-export function FormTicket(){
-  
-    const [stepPage,setstepPage] = useState<'contact' | 'ticket' | 'reason' >('contact')
+interface IProps{
+  fetchList(): Promise<void>
+}
+
+export function FormTicket({fetchList}:IProps){
+  type steps = 'contact' | 'ticket' | 'reason'
+    const [stepPage,setstepPage] = useState<steps>('contact')
+    const {Toast,showToast} = useToast()
 
     const methods = useForm<IFormTicket>({
       defaultValues:{
@@ -24,17 +32,55 @@ export function FormTicket(){
       }
     })
 
+    function validates(typeValidate:steps){
+      try{
+        if(typeValidate === 'contact'){
+          validateContact({
+            contact_type:methods.getValues('contact_type'),
+            passive_contact:methods.getValues('passive_contact')
+          })
+          setstepPage('ticket')
+  
+        }
+        else if(typeValidate === 'ticket'){
+          validateTicket({
+            type:methods.getValues('type'),
+            vehicle_ids:methods.getValues('vehicle_ids')
+          })
+          setstepPage('reason')
+        }
+        else if(typeValidate === 'reason'){
+          validateReason({
+            detail:methods.getValues('detail'),
+            reason:methods.getValues('reason')
+          })
+        }
+      }catch(error){
+        showToast(error)
+      }
+    }
 
-    function onClick(){
+
+    async function onClick(){
       if(stepPage === 'contact'){
-        setstepPage('ticket')
+        validates(stepPage)
       }
       else if(stepPage === 'ticket'){
-        setstepPage('reason')
+        validates(stepPage)
       }
       else if(stepPage === 'reason'){
-       console.log(methods.getValues())
+        try{
+          validates(stepPage)
+          await createTicket(methods.getValues())
+          methods.reset()
+          setstepPage('contact')
+          showToast('Ticket criado com sucesso!')
+        }catch(error){
+          showToast(error)
+        }
+        await fetchList()
       }
+     
     }
 
     function onClickBack(){
@@ -54,15 +100,15 @@ export function FormTicket(){
       <h2 className="text-xl font-semibold mb-4">Novo atendimento ao cliente</h2>
       
       <div className="flex mb-4 space-x-4">
-        <button onClick={()=>setstepPage('contact')} className={`flex-1 border-b-2 hover:scale-110 
+        <button onClick={()=>validates('contact')} className={`flex-1 border-b-2 hover:scale-110 
           ${stepPage === 'contact' && `border-blue-500 ` }  text-blue-500 pb-2`}>
           CONTATO
         </button>
-        <button onClick={()=>setstepPage('ticket')} className={`flex-1 border-b-2 hover:scale-110 
+        <button onClick={()=>validates('ticket')} className={`flex-1 border-b-2 hover:scale-110 
           ${stepPage === 'ticket' && `border-blue-500 ` }  text-blue-500 pb-2`}>
           TICKET
         </button>
-        <button onClick={()=>setstepPage('reason')} className={`flex-1 border-b-2 hover:scale-110 
+        <button onClick={()=>validates('reason')} className={`flex-1 border-b-2 hover:scale-110 
           ${stepPage === 'reason' && `border-blue-500 ` }  text-blue-500 pb-2`}>
           MOTIVO
         </button>
@@ -93,7 +139,8 @@ export function FormTicket(){
       </button>
     </div>
     </div>
-      </FormProvider>
+    <Toast/>
+     </FormProvider>
 
     )
 }

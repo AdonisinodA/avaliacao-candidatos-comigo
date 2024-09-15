@@ -1,8 +1,16 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { IFormTicket } from "@/types/ticket";
+import { useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 
 export function Contact(){
    const {watch, setValue} = useFormContext<IFormTicket>()
+
+  useEffect(()=>{
+    setValue('contact_type','')
+
+  },[watch('passive_contact')])
+
     return <>
     <div className="mb-4">
         <p className="font-semibold">Houve contato passivo?</p>
@@ -48,8 +56,7 @@ export function Contact(){
           </button>
         </div>
       </div>
-
-      <div className="mb-4">
+  {watch('passive_contact') &&  <div className="mb-4">
         <label htmlFor="tipoContato" className="block text-sm font-semibold mb-2">
           Tipo de contato
         </label>
@@ -66,6 +73,7 @@ export function Contact(){
           <option value="email">E-mail</option>
           <option value="chat">Chat</option>
         </select>
-      </div>
+      </div> }
+     
     </>
 }

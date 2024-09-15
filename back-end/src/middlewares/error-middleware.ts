@@ -3,6 +3,7 @@ import { ErrorCustom } from '../error/error-custom'
 
 
 export default function errorHandler (error:unknown, _res:Request, res:Response, _next:NextFunction) {
+    console.log("🚀 ~ errorHandler ~ error:", error)
     if(error instanceof ErrorCustom){
       res.status(error.code).json({message: error.message})
     }else {
