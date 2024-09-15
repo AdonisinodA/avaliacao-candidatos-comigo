@@ -75,16 +75,16 @@ function Login(){
               }} type="checkbox" className="mr-2" />
               <label className="text-black">Mantenha-me conectado.</label>
             </div>
-            <a href="#" className="text-blue-600">Esqueci minha senha</a>
+            <a href="#" className="text-primary">Esqueci minha senha</a>
           </div>
-          <button  className="w-full bg-blue-700 text-white py-2 rounded-md">
+          <button  className="w-full bg-primary text-white py-2 rounded-md">
             Entrar
           </button>
         </form>
       </div>
     </div>
 
-    <div className="w-full md:w-1/2 bg-blue-700 flex items-center justify-center p-6 md:p-0">
+    <div className="w-full md:w-1/2 bg-primary flex items-center justify-center p-6 md:p-0">
       <Image
         src={loginLogo}
         width={500}

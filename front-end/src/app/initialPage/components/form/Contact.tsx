@@ -12,7 +12,7 @@ export function Contact(){
           <button
             className={`flex-1 border p-3 rounded-lg ${
                 watch('passive_contact') === true
-                ? "border-blue-500 bg-blue-50"
+                ? "border-blue-600 bg-blue-50"
                 : "border-gray-300"
             }`}
             onClick={() => setValue('passive_contact', true)}
@@ -32,7 +32,7 @@ export function Contact(){
           <button
             className={`flex-1 border p-3 rounded-lg ${
                 watch('passive_contact') === false
-                ? "border-blue-500 bg-blue-50"
+                ? "border-blue-600 bg-blue-50"
                 : "border-gray-300"
             }`}
             onClick={() => {

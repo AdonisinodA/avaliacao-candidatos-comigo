@@ -1,6 +1,7 @@
 "use client";
 
 import { useAuth } from "@/context/Auth";
+import localStorageService from "@/service/localStorage";
 import { useState, useEffect, useRef } from "react";
 import { FaRegUser } from "react-icons/fa";
 
@@ -8,6 +9,7 @@ export default function DropDown() {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const {logout} = useAuth()
+  const user = localStorageService.getUser()
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -31,9 +33,9 @@ export default function DropDown() {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="inline-flex justify-center w-full  shadow-sm px-4 py-2 bg-blue-600 text-sm font-medium "
+        className="inline-flex justify-center w-full items-center  shadow-sm px-4 py-2 bg-primary text-sm font-medium "
       >
-        <FaRegUser  />
+        <span className="mr-2">{user?.name ?? 'Não reconhecido'}</span> <FaRegUser  />
       </button>
 
       {isOpen && (

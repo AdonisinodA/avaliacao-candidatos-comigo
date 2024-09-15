@@ -134,7 +134,7 @@ export function FormTicket({fetchList}:IProps){
 
       <button 
         onClick={onClick} 
-        className="w-[30%] bg-blue-500 text-white p-2 rounded-lg flex items-center justify-center ml-auto"
+        className="w-[30%] bg-primary text-white p-2 rounded-lg flex items-center justify-center ml-auto"
       >
         {stepPage === 'reason' ? 
           <>Cadastrar <span className="ml-2"><FaCheck/></span></> 
