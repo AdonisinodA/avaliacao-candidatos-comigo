@@ -44,6 +44,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const login = (data: User, keepConnected: boolean) => {
       localStorageService.setUser({
+        id:data.id,
         email: data.email,
         name: data.name,
         role: data.role,

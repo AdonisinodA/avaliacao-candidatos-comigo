@@ -41,12 +41,15 @@ interface TicketVehicle {
 type TicketsWithVehicles = Ticket[];
 
 
-type IFormTicket = {
+interface IFormTicket {
   passive_contact: boolean;
   contact_type: string;
   type: string;
   reason: string;
   detail: string;
-  collaborator_id: string;
-  vehicle_id: string;
+  vehicle_ids: number[];
+}
+
+interface  IFormTickerToSend extends IFormTicket{
+  collaborator_id:number
 }

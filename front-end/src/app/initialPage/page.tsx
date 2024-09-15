@@ -4,10 +4,10 @@ import { Header } from "./components/Header";
 import { Table } from "./components/Table";
 import { Filter } from "./components/Filter";
 import useToast from "@/error/UseModalError";
-import api from "@/api/axios";
 import { Ticket } from "@/types/ticket";
 import SideModal from "../../components/SideModal";
-import { FormTicket } from "./components/FormTicket";
+import { FormTicket } from "./components/form/FormTicket";
+import {  listTickets } from "@/service/api";
 
 
 export default function InitialPage() {
@@ -19,9 +19,8 @@ export default function InitialPage() {
   const closeModal = () => setIsOpen(false);
   async function fetchList(){
     try{
-        const {data} = await api.get<Ticket[]>('/ticket/list')
-        setListTicket(data)
-
+       const list = await listTickets()
+        setListTicket(list)
     }catch(error){
         showToast(error)
     }
@@ -36,7 +35,7 @@ export default function InitialPage() {
     <div className="min-h-screen bg-gray-100">
         <Header/>
       <main className="container mx-auto p-4">
-        <div className="bg-white shadow-md rounded-lg p-6">
+        <div className="bg-white shadow-md rounded-lg p-6 ">
           <SideModal closeModal={closeModal} isOpen={isOpen}><FormTicket/> </SideModal>
             <Filter search={search} setSearch={setSearch} openModal={openModal}/>
             <Table listTicket={listTicket} />
