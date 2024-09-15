@@ -48,6 +48,7 @@ function Reason(){
       onChange={(event)=>{
         setValue('detail', event.target.value)
         }}
+        value={watch('detail')}
         className="w-full mt-4 p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
         placeholder="Informe mais detalhes sobre o ticket"
         rows={4}

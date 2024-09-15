@@ -40,6 +40,7 @@ useEffect(()=>{
                 name="ticket-intent"
                 value={option}
                 checked={watch('type') === option}
+                defaultChecked={watch('type') === option}
                 onChange={() => setValue('type',option)}
                 className="form-radio text-blue-600"
               />
@@ -53,6 +54,12 @@ useEffect(()=>{
       <div className="mb-4">
         <span className="text-sm text-gray-700"> Veículo(s)</span>
         <SelectMulti 
+          value={vehicles.filter((filterVe)=> watch('vehicle_ids').includes(filterVe.id)).map((vehicle)=>{
+            return {
+              label:vehicle.plate,
+              value:String(vehicle.id)
+            }
+          })}
           onchange={(dado) => {
             setValue('vehicle_ids',dado.map(option=> Number(option.value)) )
           }
@@ -63,6 +70,7 @@ useEffect(()=>{
               value:String(vehicle.id)
             }
           })}
+          
           placeholder="Selecione"
         />
       </div>

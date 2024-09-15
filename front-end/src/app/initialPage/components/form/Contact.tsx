@@ -1,15 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { IFormTicket } from "@/types/ticket";
-import { useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 
 export function Contact(){
    const {watch, setValue} = useFormContext<IFormTicket>()
-
-  useEffect(()=>{
-    setValue('contact_type','')
-
-  },[watch('passive_contact')])
 
     return <>
     <div className="mb-4">
@@ -41,7 +35,10 @@ export function Contact(){
                 ? "border-blue-500 bg-blue-50"
                 : "border-gray-300"
             }`}
-            onClick={() => setValue('passive_contact', false)}
+            onClick={() => {
+              setValue('contact_type', '')
+              setValue('passive_contact', false)
+            }}
           >
             <div className="flex items-center">
               <input
@@ -63,6 +60,7 @@ export function Contact(){
         <select
           id="tipoContato"
           name="contact_type"
+          value={watch('contact_type')}
           onChange={(event)=>{
             setValue('contact_type', event.target.value)
           }}

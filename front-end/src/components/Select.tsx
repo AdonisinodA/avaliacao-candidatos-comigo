@@ -6,11 +6,13 @@ interface IProps{
     options : option[],
     placeholder:string,
     onchange: (options: MultiValue<option>) => void;
+    value:{ value: string, label: string }[],
 }
 
-export function SelectMulti({onchange,options,placeholder}:IProps){
+export function SelectMulti({onchange,options,placeholder, value}:IProps){
     return <>
        <SelectLib
+            value={value}
             options={options}
             placeholder={placeholder}
             noOptionsMessage={() => 'Nenhuma opção disponível'}

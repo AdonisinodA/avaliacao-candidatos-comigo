@@ -20,3 +20,15 @@ export async function createTicket(data:IFormTicket){
     const user = localStorageService.getUser()
     await api.post('/ticket', {collaborator_id:user?.id,...data})
 }
+
+
+export async function editTicket(ticket_id:number, data:IFormTicket){
+    await api.put('/ticket/edit', {ticket_id:ticket_id,...data})
+}
+
+
+export async function getTicketById(ticket_id:number){
+    const {data} = await api.get<IFormTicket>(`/ticket/get/${ticket_id}`)
+    return data
+
+}

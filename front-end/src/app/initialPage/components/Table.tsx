@@ -16,11 +16,12 @@ import { HiOutlinePencil } from "react-icons/hi2";
 interface IProps{
     listTicket: Ticket[]
     fetchList(): Promise<void>
+    editTicket: (ticket_id:number) => void
 }
 
-export function Table({listTicket, fetchList}:IProps){
+export function Table({listTicket, fetchList, editTicket}:IProps){
   const user = localStorageService.getUser()
-  const [openModal, setOpenModal] = useState<boolean>(false)
+  const [modal, setModal] = useState<boolean>(false)
   const [ticketId, setTicketId] = useState<number>()
 
 
@@ -66,13 +67,13 @@ export function Table({listTicket, fetchList}:IProps){
                     <td className="border p-2" align="center">{DateUtils.formatDate(new Date(ticket.term))}</td>
                     <td className="border p-2" align="center">{ticket.status}</td>
                     <td className="border p-2 space-x-2 justify-center" align="center">
-                      <button className="text-black/50 hover:text-black">
+                      <button onClick={()=>editTicket(ticket.id)} className="text-black/50 hover:text-black">
                       <HiOutlinePencil/>
                       </button>
                       {user?.role === 'admin' &&
                           <button onClick={()=>{
                             setTicketId(ticket.id)
-                            setOpenModal(true)
+                            setModal(true)
                           }} className="text-red-500 hover:text-red-700">
                           <FaRegTrashAlt/>
                         </button>
@@ -84,10 +85,11 @@ export function Table({listTicket, fetchList}:IProps){
           </table>
           <Toast/>
           <ConfirmModal
-          isOpen={openModal}
+          isOpen={modal}
           message={`Deseja realmente deletar o ticket de ID ${ticketId}?`}
-          onClose={()=>{ setOpenModal(false)}}
+          onClose={()=>{ setModal(false)}}
           onConfirm={()=>{onDeleteTicket()}}
           />
+
     </>
 }

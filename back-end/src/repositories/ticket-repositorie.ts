@@ -66,10 +66,18 @@ class TicketRepository {
   }
 
   // Encontrar um Ticket por ID
-  async findById(ticketId: number): Promise<Ticket | null> {
-    return this.prisma.ticket.findUnique({
+  async findById(ticketId: number) {
+    const ticket = await this.prisma.ticket.findUnique({
       where: { id: ticketId },
+      include: {
+        tickets_vehicles: {
+          include: {
+            vehicles: true
+          }
+        }
+      }
     });
+    return ticket
   }
 
   // Atualizar um Ticket por ID

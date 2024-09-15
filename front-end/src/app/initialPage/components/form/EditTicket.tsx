@@ -1,7 +1,7 @@
 'use client'
 
 import { IFormTicket } from "@/types/ticket";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { FaArrowRight, FaArrowLeft } from "react-icons/fa6";
 import { FaCheck } from "react-icons/fa";
@@ -9,28 +9,32 @@ import { Contact } from "./Contact";
 import Ticket from "./Ticket";
 import Reason from "./Reason";
 import useToast from "@/components/modal/UseModal";
-import { createTicket } from "@/service/api";
+import {  editTicket } from "@/service/api";
 import {  validateContact, validateReason, validateTicket } from "../../service/validateTicket";
 
 interface IProps{
   fetchList(): Promise<void>
+  ticket: IFormTicket
+  ticketId: number | undefined
 }
 
-export function FormTicket({fetchList}:IProps){
+export function EditTicket({fetchList,ticket, ticketId}:IProps){
   type steps = 'contact' | 'ticket' | 'reason'
     const [stepPage,setstepPage] = useState<steps>('contact')
     const {Toast,showToast} = useToast()
 
     const methods = useForm<IFormTicket>({
-      defaultValues:{
-        contact_type:'',
-        detail:'',
-        passive_contact:true,
-        reason:'',
-        type:'',
-        vehicle_ids:[]
-      }
+      defaultValues:ticket
     })
+    
+
+    useEffect(() => {
+      if (ticket) {
+        methods.reset(ticket); 
+      }
+    }, [ticket, methods]);
+
+
 
     function validates(typeValidate:steps){
       try{
@@ -71,10 +75,8 @@ export function FormTicket({fetchList}:IProps){
       else if(stepPage === 'reason'){
         try{
           validates(stepPage)
-          await createTicket(methods.getValues())
-          methods.reset()
-          setstepPage('contact')
-          showToast('Ticket criado com sucesso!')
+          await editTicket(ticketId!,methods.getValues())
+          showToast('Ticket Editado com sucesso!')
         }catch(error){
           showToast(error)
         }
@@ -96,8 +98,8 @@ export function FormTicket({fetchList}:IProps){
         <FormProvider {...methods}>
         <div className="mx-6">
           
-      <h1 className="text-[0.7rem] text-gray-500 font-semibold mb-2 my-2 ">Formulário de cadastro</h1>
-      <h2 className="text-xl font-semibold mb-4">Novo atendimento ao cliente</h2>
+      <h1 className="text-[0.7rem] text-gray-500 font-semibold mb-2 my-2 ">Formulário de edição de ticket</h1>
+      <h2 className="text-xl font-semibold mb-4">Edição de Ticket</h2>
       
       <div className="flex mb-4 space-x-4">
         <button onClick={()=>setstepPage('contact')} className={`flex-1 border-b-2 hover:scale-110 

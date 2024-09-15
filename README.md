@@ -49,12 +49,14 @@ const users = [
 - [ ] 8. Nível 8 - Monitoramento e Observabilidade
 
 
-#### CRUD
+#### Operações
 
 - [x] 1. Create
 - [x] 2. Read
-- [ ] 3. Update
+- [x] 3. Update
 - [x] 4. Delete
+- [ ] 5. Filter
+
 
 # Front-end
 

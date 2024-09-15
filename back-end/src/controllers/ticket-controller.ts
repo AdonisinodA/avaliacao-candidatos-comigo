@@ -53,7 +53,17 @@ export default class TicketController{
             res.status(200).json(ticket)
 
             }catch(error){
-                console.log('erro caiu aqui')
+                next(error)
+            }
+    }
+
+
+    static async getById(req:Request<{ticket_id?:number}>, res:Response, next: NextFunction){
+        try{
+            const {ticket_id} = req.params
+            const ticket = await new TicketUseCase().getTicketById(ticket_id as number)
+            res.status(200).json(ticket)
+            }catch(error){
                 next(error)
             }
     }

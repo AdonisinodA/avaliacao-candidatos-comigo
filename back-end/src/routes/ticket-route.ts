@@ -7,7 +7,8 @@ const ticketRoutes = express.Router()
 
 ticketRoutes.post('/',EnsureAuthenticated.execute,PermissionsMiddleware.execute('atendente'),TicketController.create)
 ticketRoutes.get('/list',EnsureAuthenticated.execute,PermissionsMiddleware.execute('atendente'),TicketController.list)
-ticketRoutes.put('/edit/:ticket_id',EnsureAuthenticated.execute,PermissionsMiddleware.execute('atendente'),TicketController.edit)
+ticketRoutes.put('/edit/',EnsureAuthenticated.execute,PermissionsMiddleware.execute('atendente'),TicketController.edit)
+ticketRoutes.get('/get/:ticket_id',EnsureAuthenticated.execute,PermissionsMiddleware.execute('atendente'),TicketController.getById)
 ticketRoutes.delete('/delete/:ticket_id',EnsureAuthenticated.execute,PermissionsMiddleware.execute('admin'),TicketController.delete)
 
 

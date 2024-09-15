@@ -53,7 +53,22 @@ class TicketUseCase {
   // Encontrar um Ticket por ID
   async getTicketById(ticketId: number) {
     try {
-      return await this.ticketRepo.findById(ticketId);
+      ticketId = Number(ticketId)
+      const ticket =  await this.ticketRepo.findById(ticketId);
+      if (!ticket) {
+       AppError('Ticket não encontrado');
+      }
+    
+      const formattedTicket = {
+        passive_contact: ticket!.passive_contact,
+        contact_type: ticket!.contact_type,
+        type: ticket!.type,
+        reason: ticket!.reason,
+        detail: ticket!.detail,
+        vehicle_ids: ticket!.tickets_vehicles.map(tv => tv.vehicle_id), // Array de IDs dos veículos
+      };
+      return formattedTicket
+
     } catch (error) {
       AppError('Erro ao buscar ticket');
     }
