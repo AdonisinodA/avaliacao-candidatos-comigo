@@ -22,7 +22,7 @@ export default class TicketController{
         const ticket = new TicketUseCase().createTicket(body)
         res.status(201).json(ticket)
         }catch(error){
-            next(error)
+        next(error)
         }
     }
     static async list(req:Request, res:Response, next: NextFunction){
@@ -50,7 +50,7 @@ export default class TicketController{
     static async delete(req:Request, res:Response, next: NextFunction){
         try{
             const body = req.body
-            const ticket = new TicketUseCase().createTicket(body)
+            const ticket = new TicketUseCase().deleteTicket(body)
             res.status(200).json(ticket)
 
             }catch(error){
