@@ -33,9 +33,10 @@ export function Table({listTicket, fetchList, editTicket}:IProps){
       }
       await deleteTicket(ticketId as number)
       await fetchList()
+      setModal(false)
       showToast('Ticket deletado com sucesso')
     }catch(error){
-      showToast(error)
+      showToast(error, true)
     }
 
   }

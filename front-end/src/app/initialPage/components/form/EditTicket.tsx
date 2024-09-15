@@ -60,7 +60,7 @@ export function EditTicket({fetchList,ticket, ticketId}:IProps){
           })
         }
       }catch(error){
-        showToast(error)
+        showToast(error, true)
       }
     }
 
@@ -78,7 +78,7 @@ export function EditTicket({fetchList,ticket, ticketId}:IProps){
           await editTicket(ticketId!,methods.getValues())
           showToast('Ticket Editado com sucesso!')
         }catch(error){
-          showToast(error)
+          showToast(error, true)
         }
         await fetchList()
       }

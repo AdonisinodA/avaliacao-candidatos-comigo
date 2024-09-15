@@ -56,7 +56,7 @@ export function FormTicket({fetchList}:IProps){
           })
         }
       }catch(error){
-        showToast(error)
+        showToast(error, true)
       }
     }
 
@@ -75,8 +75,9 @@ export function FormTicket({fetchList}:IProps){
           methods.reset()
           setstepPage('contact')
           showToast('Ticket criado com sucesso!')
+          console.log('passou aqui e nao deu erro')
         }catch(error){
-          showToast(error)
+          showToast(error, true)
         }
         await fetchList()
       }

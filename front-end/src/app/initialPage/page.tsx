@@ -31,7 +31,7 @@ export default function InitialPage() {
        const list = await listTickets()
         setListTicket(list)
     }catch(error){
-        showToast(error)
+        showToast(error, true)
     }
   }
   useEffect(()=>{
@@ -46,7 +46,7 @@ export default function InitialPage() {
       setTicket(ticket)
       setIsOpen('edit')
     }catch(error){
-      showToast(error)
+      showToast(error, true)
 
     }
   }

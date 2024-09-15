@@ -9,18 +9,17 @@ const useToast = () => {
   const [message, setMessage] = useState('');
   const [error,setError] = useState<boolean>(false) 
 
-  const showToast = useCallback((message: unknown) => {
+  const showToast = useCallback((message: unknown, error= false) => {
+    setError(error)
     let msg = 'Erro interno'
     if(typeof message === 'string'){
       msg = message
     }
     if(message instanceof AxiosError){
       msg = message.response?.data.message ?? 'Erro interno'
-      setError(true)
     }
     else if( message instanceof Error){
       msg = message.message
-      setError(true)
     }
     
     setMessage(msg);

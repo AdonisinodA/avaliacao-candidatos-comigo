@@ -15,7 +15,7 @@ async function fetchList(){
    const result =  await listVehicle()
    setVehicles(result)
   }catch(error){
-    showToast(error)
+    showToast(error, true)
   }
 }
 

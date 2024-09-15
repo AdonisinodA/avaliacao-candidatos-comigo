@@ -31,7 +31,7 @@ function Login(){
       login(data,keepConnected)
       showToast('Autenticado com sucesso!');
     }catch(error){
-      showToast(error);
+      showToast(error, true);
     }
   }
   return (

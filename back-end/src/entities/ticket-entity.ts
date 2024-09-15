@@ -97,7 +97,9 @@ class TicketEntity {
   // Função geral para validar os dados
   public async validate() {
     this.validatePassiveContact();
+   if(this.passiveContact){
     this.validateContactType();
+   }
     this.validateType();
     this.validateReason();
     this.validateDetail();
