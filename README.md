@@ -10,6 +10,7 @@
 
 - Entre na pasta `back-end`
 - Deixei o `.env` exposto no repositório para faciltar a configuração, Então não é preciso fazer nenhuma configuração de variável.
+- Use o comando npx prisma migrate deploy para construir o schema do banco de dados.
 - Use o comando ``npm run database:up`` para subir o banco de dados postgres
 - O comando ``npm run database:up`` utiliza `docker compose`, caso utilize o `docker-compose` use o comando `docker-compose up --build`
 - Para executar o projeto é necessário o comando `npm i` para instalar as dependências.
